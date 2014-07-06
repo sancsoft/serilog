@@ -34,7 +34,8 @@ namespace Serilog.Sinks.Keen
         /// Construct a sink that saves logs to the specified storage account. Properties are being send as data and the level is used as tag.
         /// </summary>
         ///  <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
-        /// <param name="inputKey">The input key as found on the Loggly website.</param>
+        /// <param name="projectId">The project id as found on the Keen website.</param>
+        /// <param name="writeKey">The write key as defined for the specified project on the Keen website.</param>
         public KeenSink(IFormatProvider formatProvider, string projectId, string writeKey)
         {
             _formatProvider = formatProvider;

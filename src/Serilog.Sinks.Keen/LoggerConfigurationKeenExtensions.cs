@@ -34,7 +34,7 @@ namespace Serilog
         /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
         /// <returns>Logger configuration, allowing configuration to continue.</returns>
         /// <exception cref="ArgumentNullException">A required parameter is null.</exception>
-        public static LoggerConfiguration Loggly(
+        public static LoggerConfiguration Keen(
             this LoggerSinkConfiguration loggerConfiguration,
              string projectId,
              string writeKey,
