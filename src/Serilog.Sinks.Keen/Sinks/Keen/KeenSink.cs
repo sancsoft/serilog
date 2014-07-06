@@ -50,14 +50,24 @@ namespace Serilog.Sinks.Keen
         /// <param name="logEvent">The log event to write.</param>
         public void Emit(LogEvent logEvent)
         {
+            // create a dictionary of the properties associated with the event,
+            // the format and simplification is swiped from the Loggly sink
             var properties = logEvent.Properties
                          .Select(pv => new { Name = pv.Key, Value = KeenPropertyFormatter.Simplify(pv.Value) })
                          .ToDictionary(a => a.Name, b => b.Value);
 
+            // if there is an associated exception, add it to the properties
             if (logEvent.Exception != null)
                 properties.Add("Exception", logEvent.Exception);
 
-            _client.AddEventAsync(logEvent.Level.ToString(),properties);
+            // add on the rendered message using the sink's format provider
+            properties.Add("Message", logEvent.RenderMessage(_formatProvider));
+            // add the numeric representation of the level
+            properties.Add("Level", logEvent.Level);
+            // include the event timestamp so we don't have to use the receive timestamp on the provider
+            properties.Add("Timestamp", logEvent.Timestamp);
+            // log the event categorized by the level name
+            _client.AddEventAsync(logEvent.Level.ToString(), properties);
         }
     }
 }
